@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--katex cdn-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" integrity="sha384-zTROYFVGOfTw7JV7KUu8udsvW2fx4lWOsCEDqhBreBwlHI4ioVRtmIvEThzJHGET" crossorigin="anonymous">
+
+    <!--kalam fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!--custom styles-->
+    <style>
+
+        :root {
+            --wb-blue: #0055ff;
+            --wb-red: red;
+            --wb-black: black;
+            --wb-white: white;
+            --wb-green: green;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            margin-bottom: 50vh;
+        }
+
+        body {
+            margin: 0.5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            width: calc(100vw - 1rem);
+
+            background-color: var(--wb-white);
+            color: var(--wb-black);
+
+            font-family: 'Kalam', cursive;
+        }
+
+        #root {
+            display: flex;
+            flex-wrap: wrap;
+
+            width: 100%;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+
+        #root > * {
+            margin: 0 1rem;
+        }
+
+        .chapter {
+            width: 100%;
+            /*text-decoration: underline red;*/
+            color: var(--wb-blue);
+            font-size: 2.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .section {
+            width: 400px;
+            position: relative;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            color: var(--wb-green);
+            margin: 0;
+        }
+
+        .section h3 {
+            font-size: 1.25rem;
+            color: var(--wb-red);
+            margin: 0.5rem 0;
+        }
+
+        .section h4 {
+            margin: 0.5rem 0;
+            text-decoration: underline black;
+        }
+
+        .section p {
+            margin: 0.5rem 0;
+        }
+
+        .katex-display {
+            margin: 0.75rem 0;
+        }
+
+        @media only screen and (max-width: 800px) {
+            html, body {
+                margin: 0 0.25rem 1.25rem;
+                width: calc(100vw - 1.25rem);
+            }
+
+            #root {
+                margin: 0;
+            }
+
+            #root > * {
+                margin: 0 0.25rem;
+            }
+
+            .section {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+<body>
+<div id="root">
+    {{body}}
+</div>
+</body>
+</html>
