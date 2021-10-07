@@ -94,6 +94,27 @@
             margin: 0.5rem 0;
         }
 
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .section table thead tr {
+            border-bottom: 1px solid black;
+        }
+
+        .section table thead th+th {
+            border-left: 1px solid black;
+        }
+
+        .section table tbody td+td {
+            border-left: 1px solid black;
+        }
+
+        .section table td, .section table th {
+            padding: 0.25rem 0.5rem;
+        }
+
         .katex-display {
             margin: 0.75rem 0;
         }
@@ -117,7 +138,6 @@
             }
         }
     </style>
-
 </head>
 <body>
 <div id="root">

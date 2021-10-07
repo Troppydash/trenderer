@@ -144,15 +144,21 @@ therefore, the general solution $y$ is
     y = C_1 e^{4x} + C_2 e^{-x} - x^2 + \frac{3}{2}x - \frac{13}{8}
 \]
 
+## Transforms
 
+### Laplace Transform
 
+#### Definition
+given a function $f(t)$, the Laplace transform is
+\[
+\mathscr{L} \\{f(t)\\} (s) = \int_{0}^{\infty} e^{-st} f(x) \\, dt
+\]
 
+#### Examples
 
-
-
-
-## Laplace Transform
-
-### hello
-
-Yes
+| $f(t)$ | $\mathscr{L} \\{f(t)\\} (s)$ |
+| --- | --- |
+| $1$ | $\frac{1}{s}$, given $s \gt 0$ |
+| $e^{at}$ | $\frac{1}{s-a}$, given $s \gt a$ |
+| $\sin(at)$ | $\frac{a}{s^2+a^2}$ |
+| $\cos(at)$ | $\frac{s}{s^2+a^2}$ |
