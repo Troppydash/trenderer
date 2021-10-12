@@ -121,27 +121,27 @@ y^{\prime\prime} - 3y^\prime - 4y = 4x^2
 
 first find the solution $h$ for the homogeneous equation
 \[
-    y^{\prime\prime} - 3y^\prime - 4y = 0,
+y^{\prime\prime} - 3y^\prime - 4y = 0,
 \]
 
 which is
 \[
-    h = C_1 e^{4x} + C_2 e^{-x}.
+h = C_1 e^{4x} + C_2 e^{-x}.
 \]
 
 as $D = P_2(x)$, our guess for $p$ is
 \[
-    p = Ax^2 + Bx + C
+p = Ax^2 + Bx + C
 \]
 
 substituting $p$ for $y$, we can solve for $A$, $B$, and $C$:
 \[
-    A = -1, B = \frac{3}{2}, C = -\frac{13}{8}
+A = -1, B = \frac{3}{2}, C = -\frac{13}{8}
 \]
 
 therefore, the general solution $y$ is
 \[
-    y = C_1 e^{4x} + C_2 e^{-x} - x^2 + \frac{3}{2}x - \frac{13}{8}
+y = C_1 e^{4x} + C_2 e^{-x} - x^2 + \frac{3}{2}x - \frac{13}{8}
 \]
 
 ## Transforms
@@ -151,14 +151,31 @@ therefore, the general solution $y$ is
 #### Definition
 given a function $f(t)$, the Laplace transform is
 \[
-\mathscr{L} \\{f(t)\\} (s) = \int_{0}^{\infty} e^{-st} f(x) \\, dt
+\mathscr{L} \{f(t)\} (s) = \int_{0}^{\infty} e^{-st} f(x) \, dt
 \]
 
 #### Examples
+Identities:
 
-| $f(t)$ | $\mathscr{L} \\{f(t)\\} (s)$ |
+| $f(t)$ | $\mathscr{L} \{f(t)\} (s) = F(s)$, given s $\gt$ 0 |
 | --- | --- |
-| $1$ | $\frac{1}{s}$, given $s \gt 0$ |
-| $e^{at}$ | $\frac{1}{s-a}$, given $s \gt a$ |
+| $1$ | $\frac{1}{s}$ |
+| $e^{at}$ | $\frac{1}{s-a}$ |
 | $\sin(at)$ | $\frac{a}{s^2+a^2}$ |
 | $\cos(at)$ | $\frac{s}{s^2+a^2}$ |
+| $t^n$ | $\frac{n!}{s^{n+1}}$ |
+|||
+| $f^{\prime}(t)$ | $sF(s) - f(0)$ |
+| $f^{(n)}(t)$ | $s^n F(s) - s^{n-1} f(0) - s^{n-2} f^\prime (0) - \cdots - s^0 f^{(n-1)}(0)$ |
+| $e^{at} f(t)$ | $F(s-a)$ |
+| $af(t) + bg(t)$ | $aF(t) + bG(t)$ |
+
+Heaviside and Dirac functions:
+
+let $\theta(t)$, $\delta(t)$ be the Heaviside step function and the Dirac delta function, defined as:
+
+\[
+\theta(t) = \begin{cases}
+0 & x
+\end{cases}
+\]

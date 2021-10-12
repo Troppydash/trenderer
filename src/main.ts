@@ -1,10 +1,10 @@
 import * as marked from 'marked';
-import { promises as fs } from 'fs';
+import {promises as fs} from 'fs';
 import * as path from 'path';
 import * as katex from 'katex';
 import * as jsdom from 'jsdom';
 import * as minify from 'html-minifier-terser';
-
+import * as he from 'he';
 
 // https://stackoverflow.com/questions/5953239/how-do-i-change-file-extension-with-javascript/5953384
 function changeExtension(file, extension) {
@@ -19,50 +19,106 @@ function templateMapping(template: string, mapping: Record<string, string>): str
     return template;
 }
 
-function mdToHTML(source: string) {
-    const html = marked(source);
 
-    // https://stackoverflow.com/questions/38181548/render-math-in-node-js-template-with-katex
-    const texifed = html.replace(/\$\$\s*(.*?)\s*\$\$/g, function(outer, inner) {
-        return katex.renderToString(inner, { displayMode: true, output: 'html' , throwOnError: false});
-    }).replace(/\[\s*(.*?)\s*\]/g, function(outer, inner) {
-        return katex.renderToString(inner, { displayMode: true, output: 'html' , throwOnError: false});
-    }).replace(/\$\s*(.*?)\s*\$/g, function(outer, inner) {
-        return katex.renderToString(inner, { displayMode: false,  output: 'html', throwOnError: false});
+function formatLatex(latex: string): string {
+    return latex.replace(/[\r\n]/g, ' ');
+}
+
+function saveAndReplace(raw: string): [string, string[]] {
+    const mapping = [];
+    const replaced = raw.replace(/\\\[\s*((.|\n|\r)*?)\s*\\\]/g, (_, latex) => {
+        mapping.push(katex.renderToString(formatLatex(latex), {
+            displayMode: true,
+            output: 'html',
+            throwOnError: false
+        }));
+        return `<>${mapping.length - 1}<>`;
+    }).replace(/\$\s*((.|\n|\r)*?)\s*\$/g, (_, latex) => {
+        mapping.push(katex.renderToString(formatLatex(latex), {
+            displayMode: false,
+            output: 'html',
+            throwOnError: false
+        }));
+        return `<>${mapping.length - 1}<>`;
     });
+    return [replaced, mapping];
+}
 
-    // TODO: Fix H1 getting stuck
-    const { window } = new jsdom.JSDOM(texifed);
+function replaceMapping(md: string, mapping: string[]): string {
+    mapping.forEach((map, index) => {
+        md = md.replace(`<>${index}<>`, map);
+    });
+    return md;
+}
+
+function groupHeadings(html: string): string {
+    const {window} = new jsdom.JSDOM(html);
     const body = window.document.querySelector('body');
-    const children = [...body.children];
-    for (let i = 0, j = 0; i < children.length; ++i, ++j) {
-        const child = children[i];
-        if (child.tagName === 'H1') {
-            child.className = 'chapter';
-            continue;
+
+    for (const level of [4, 3, 2]) {
+        const children = [...body.children];
+
+        let open = false;
+        let start = [];
+        for (let i = 0; i < children.length; ++i) {
+            const child = children[i];
+
+            if (child.tagName.startsWith('H')) {
+                if (child.tagName === `H${level}`) {
+                    child.className = `H${level}`;
+
+                    if (open) {
+                        start.push(i);
+                    }
+
+                    start.push(i);
+                    open = true;
+                }
+
+                if (open && child.tagName < `H${level}`) {
+                    start.push(i);
+                    open = false;
+                }
+            }
         }
 
-        if (child.tagName === 'H2') {
-            const start = i;
-            i += 1;
-            while (i < children.length && children[i].tagName !== 'H2')
-                i += 1;
+        if (open) {
+            start.push(children.length);
+        }
 
-            const sectionChildren = children.slice(start, i);
-            for (let j = start; j < sectionChildren.length; ++j) {
-                body.removeChild(children[j]);
+        start = start.reverse();
+        for (let i = 0; i < start.length; i += 2) {
+            const end = start[i];
+            const index = start[i + 1];
+
+            const slice = children.slice(index, end);
+            for (const child of slice) {
+                body.removeChild(child);
             }
 
             const section = window.document.createElement('div');
-            section.className = 'section';
-            section.append(...sectionChildren);
+            section.className = `H${level}-section`;
+            section.append(...slice);
 
-            body.children[j-1].insertAdjacentElement('afterend', section);
-            i -= 1;
+            if (body.children.length === 0) {
+                body.appendChild(section);
+            } else if (index - 1 < 0) {
+                body.children[0].insertAdjacentElement('beforebegin', section);
+            } else {
+                body.children[index - 1].insertAdjacentElement('afterend', section);
+            }
         }
     }
 
     return body.innerHTML;
+}
+
+function mdToHTML(source: string) {
+    const [md, mapping] = saveAndReplace(source);
+    const html = he.decode(marked(md));
+    const texifed = replaceMapping(html, mapping)
+
+    return groupHeadings(texifed);
 }
 
 async function mdFiles(args: string[]) {
@@ -97,7 +153,7 @@ async function main(args: string[]) {
     const [exe, index, ...rest] = args;
     const files = await mdFiles(rest);
 
-    note(`Processing ${files.length} files`);
+    note(`processing ${files.length} files`);
 
     const template = (await fs.readFile('assets/base.html')).toString();
 
@@ -122,10 +178,10 @@ async function main(args: string[]) {
             minifyJS: true,
         });
         await fs.writeFile(newPath, minied);
-        note(`Created ${newPath}`);
+        note(`created ${newPath}`);
     }
 
-    note('Done')
+    note('done')
 
     return 0;
 }
