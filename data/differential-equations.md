@@ -154,9 +154,7 @@ given a function $f(t)$, the Laplace transform is
 \mathscr{L} \{f(t)\} (s) = \int_{0}^{\infty} e^{-st} f(x) \, dt
 \]
 
-#### Examples
-Identities:
-
+#### Identities
 | $f(t)$ | $\mathscr{L} \{f(t)\} (s) = F(s)$, given s $\gt$ 0 |
 | --- | --- |
 | $1$ | $\frac{1}{s}$ |
@@ -168,14 +166,81 @@ Identities:
 | $f^{\prime}(t)$ | $sF(s) - f(0)$ |
 | $f^{(n)}(t)$ | $s^n F(s) - s^{n-1} f(0) - s^{n-2} f^\prime (0) - \cdots - s^0 f^{(n-1)}(0)$ |
 | $e^{at} f(t)$ | $F(s-a)$ |
-| $af(t) + bg(t)$ | $aF(t) + bG(t)$ |
+| $af(t) + bg(t)$ | $aF(s) + bG(s)$ |
+|||
+| $\theta(t-c) f(t-c)$ | $e^{-cs} F(s)$ |
+| $\delta(t-c) f(t)$ | $e^{-cs} f(c)$ |
 
-Heaviside and Dirac functions:
-
-let $\theta(t)$, $\delta(t)$ be the Heaviside step function and the Dirac delta function, defined as:
+#### Extras
+Heaviside $\theta(t)$ and Dirac $\delta(t)$ functions are:
 
 \[
-\theta(t) = \begin{cases}
-0 & x
-\end{cases}
+\begin{align*}
+    \theta(t) &= \begin{cases}
+        0 & t < 0\\
+        1 & t \ge 0
+    \end{cases}\\
+    \delta(t) &= \begin{cases}
+    0 & t \neq 0\\
+    \infty & t = 0
+    \end{cases}
+\end{align*}
+\]
+
+note that:
+\[
+\begin{align*}
+    \delta(t) &= \frac{d}{dt} \theta(t)\\
+    \theta(t) &= \int_{-\infty}^{t} \delta(x) \, dx
+\end{align*}
+\]
+
+#### Usage
+to solve any differential equation of the form
+
+\[
+    g(y, y^\prime, y^{\prime\prime}, \cdots) = f(x),
+\]
+
+simply take the Laplace transform of both sides and simplify
+
+#### Examples
+solve for $y$, if
+
+\[
+    y^{\prime\prime} + 4y = \sin t - \theta(t - 2\pi) \sin(t - 2\pi)  
+\]
+
+when $y(0) = 0$, $y^\prime(0) = 0$
+
+---
+
+let $Y(s) = \mathscr{L}\{y(t)\}(s)$
+
+taking the Laplace transform of both sides, resulting
+\[
+\begin{align*}
+    (s^2 Y(s) - s y(0) - y^\prime(0))\\ + 4Y(s) &= \frac{1}{s^2+1} - (e^{-2\pi s} \frac{1}{s^2+1})\\
+    Y(s) (s^2 + 4) &=  \frac{1}{s^2+1} (1-e^{-2\pi s})\\
+    Y(s) &=  (1-e^{-2\pi s}) \frac{1}{(s^2+1)(s^2+4)}.
+\end{align*}
+\]
+
+via partial fractional decomposition, the RHS is
+
+\[
+\begin{alignat*} {2}
+    Y(s) &= && \enspace  (1-e^{-2\pi s})(\frac{1\over 3}{s^2+1} - \frac{1\over 3}{s^2+4})\\
+        &= && \enspace  (\frac{1\over 3}{s^2+1} - \frac{1\over 3}{s^2+4})\\
+        &&& \enspace  -e^{-2\pi s} (\frac{1\over 3}{s^2+1} - \frac{1\over 3}{s^2+4}).
+\end{alignat*}
+\]
+
+solving for $y(s)$ through the inverse Laplace transform, we conclude:
+\[
+\begin{alignat*} {2}
+    y(t) &= && \enspace  \frac{1}{3}\sin t - \frac{1}{6}\sin 2t\\
+         &  && \enspace  - \theta(t-2\pi)(\frac{1}{3}\sin(t-2\pi) - \frac{1}{6}\sin(2(t-2\pi)))\\
+        &= && \enspace  (1-\theta(t-2\pi))(\frac{1}{3}\sin t - \frac{1}{6}\sin 2t).
+\end{alignat*}
 \]
