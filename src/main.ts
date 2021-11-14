@@ -55,7 +55,7 @@ function groupHeadings(html: string): string {
     const {window} = new jsdom.JSDOM(html);
     const body = window.document.querySelector('body');
 
-    for (const level of [4, 3, 2]) {
+    for (const level of [4, 3, 2, 1]) {
         const children = [...body.children];
 
         let open = false;
@@ -98,6 +98,12 @@ function groupHeadings(html: string): string {
 
             const section = window.document.createElement('div');
             section.className = `H${level}-section`;
+
+            // add custom width
+            if (level === 1) {
+                section.style.width = `${500 * (slice.length-1)}px`;
+            }
+
             section.append(...slice);
 
             if (body.children.length === 0) {

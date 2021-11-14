@@ -151,7 +151,7 @@ y = C_1 e^{4x} + C_2 e^{-x} - x^2 + \frac{3}{2}x - \frac{13}{8}
 #### Definition
 given a function $f(t)$, the Laplace transform is
 \[
-\mathscr{L} \{f(t)\} (s) = \int_{0}^{\infty} e^{-st} f(x) \, dt
+\mathscr{L} \{f(t)\} (s) \triangleq \int_{0}^{\infty} e^{-st} f(x) \, dt
 \]
 
 #### Identities
@@ -243,4 +243,104 @@ solving for $y(s)$ through the inverse Laplace transform, we conclude:
          &  && \enspace  - \theta(t-2\pi)(\frac{1}{3}\sin(t-2\pi) - \frac{1}{6}\sin(2(t-2\pi)))\\
         &= && \enspace  (1-\theta(t-2\pi))(\frac{1}{3}\sin t - \frac{1}{6}\sin 2t).
 \end{alignat*}
+\]
+
+### Convolution Integral
+
+#### Definition
+the convolution between function $f(t)$ and $g(t)$ is
+
+\[
+    (f*g)(t) \triangleq \int_0^t f(t-\tau) g(\tau) \, d\tau
+\]
+
+#### Identities
+
+\[
+\begin{align*}
+    (af(t) * bg(t))(t) &= ab(f*g)(t)\\
+    (\sin t * \cos t)(t) &= \frac{1}{2} t \sin t
+\end{align*}
+\]
+
+#### Properties
+the Convolution theorem states, for function $f(t)$ and $g(t)$,
+
+\[
+    (f*g)(t) = \mathscr{L}^{-1} \{ F(s) G(s) \},
+\]
+
+where $F(s)$ and $G(s)$ are the inverse Laplace transforms of $f$ and $g$
+
+# Fourier Transforms
+
+## Continuous Fourier Transforms
+
+let $f(t)$ be a function of the time domain, with range being intensity.
+
+And $F(\nu)$ be a function of the frequency domain, with the range being complex numbers where the modulus is the amplitude, the argument is the phase.
+
+### Forward Fourier Transform ($\mathcal{F}$)
+
+Transforms the non-periodic function $f(t)$ of the time domain into a function $F(\nu)$ of the frequency domain.
+
+#### Definition
+
+\[
+    \mathcal{F} \{f(t)\}(\nu) = \int_{-\infty}^{\infty} f(t) e^{-2\pi i \nu t} \, dt
+\]
+
+#### Examples
+| $f(t)$ | $\mathscr{F} \{f(t)\} (\nu) = F(\nu)$ |
+| --- | --- |
+| $\cos(2\pi \nu_0 t)$ | $\frac{1}{2}[\delta(\nu-\nu_0) + \delta(\nu+\nu_0)]$ |
+| $rect(t)$ | $\text{sinc}(\pi\nu)$ |
+| $\delta(t-d/2)+\delta(t+d/2)$ | $2\cos(\frac{d}{2}\nu)$ |
+
+
+### Inverse Fourier Transform ($\mathcal{F}^{-1}$)
+
+Transforms the frequency domain of a non-periodic function $F(\nu)$ into its time domain $f(t)$
+
+#### Definition
+
+\[
+\mathcal{F} \{F(\nu)\}(t) = \int_{-\infty}^{\infty} F(\nu) e^{2\pi i \nu t} \, d\nu
+\]
+
+## Discrete Fourier Transform
+
+### Fourier Series
+
+Expressing a periodic function $f(t)$ of the time domain (with period $T$), as a combination of sinoinual functions using a pair of fourier transforms. The forward transform generates the fourier coefficients by sampling $[-N, N]$ from the frequency domain, the inverse transform uses the samples to generate the original function of the time domain.
+
+#### Definition
+
+\[
+\begin{align*}
+F_{\nu} &= \frac{1}{T} \int_{\text{dom}(f)} f(t) e^{-i \frac{2\pi}{T} \nu t} \, dt\\
+f(t) &= \sum_{\nu = -N}^{\nu = N} F_{\nu} e^{i \frac{2\pi}{T} \nu t}
+\end{align*}
+\]
+
+### Forward Discrete Fourier Transform
+
+Transforms a discrete signal $f_n$ of sample size $N$ of the time domain to a discrete signal of the frequency domain.
+Note that the resulting frequency is relative to the signal period, and amplitude half the expected amount, for ignoring
+frequency output above $N/2$hz.
+
+#### Definition
+
+\[
+    F_{\nu} = \frac{1}{N} \sum_{n=0}^{N-1} f_{n} e^{-i \frac{2\pi}{N} \nu n}
+\]
+
+### Inverse Discrete Fourier Transform
+
+Transforms a discrete signal $F_{\nu}$ of the frequency domain to a discrete signal $f_n$ of the time domain
+
+#### Definition
+
+\[
+    f_n = \sum_{\nu = 0}^{N-1} F_{\nu} e^{i \frac{2\pi}{N} \nu n}
 \]
