@@ -1,0 +1,9 @@
+{
+    "verbose": true,
+    "watch": [
+        "data/",
+        "assets/base.html",
+        "build/"
+    ],
+    "ext": "md,js"
+}
