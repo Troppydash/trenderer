@@ -35,7 +35,7 @@
 
         body {
             margin: 0.5rem;
-            overflow-x: hidden;
+            overflow-x: auto;
             overflow-y: auto;
 
             width: calc(100vw - 1rem);
@@ -50,7 +50,8 @@
             display: flex;
             flex-wrap: wrap;
 
-            width: 100%;
+            max-width: 200%;
+            width: max-content;
             justify-content: flex-start;
             align-items: flex-start;
         }
@@ -125,14 +126,27 @@
             margin: 0.75rem 0;
         }
 
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1rem 0;
+        }
+
         @media only screen and (max-width: 800px) {
             html, body {
                 margin: 0 0.25rem 1.25rem;
                 width: calc(100vw - 1.25rem);
             }
 
+            body {
+                overflow-x: hidden;
+                max-width: 100%;
+            }
+
             #root {
                 margin: 0;
+                max-width: 100%;
             }
 
             #root > * {

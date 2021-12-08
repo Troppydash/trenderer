@@ -51,10 +51,48 @@ function replaceMapping(md: string, mapping: string[]): string {
     return md;
 }
 
-function groupHeadings(html: string): string {
+function groupHeadings(filename: string, html: string): string {
     const {window} = new jsdom.JSDOM(html);
     const body = window.document.querySelector('body');
 
+    // replace image tags
+    const images = body.querySelectorAll('img');
+    for (const image of images) {
+        // change path
+        const src = image.getAttribute('src');
+        image.setAttribute('src', `${filename}/${src}`);
+
+        // default size
+        image.setAttribute('width', '350px');
+
+        // get custom attributes
+        const parent = image.parentElement;
+        if (parent != null) {
+            const text = parent.textContent;
+            // get key,value pair as key=pair attributes, seperatred by comma in text between {}
+            const keyValuePairs = text.match(/\{(.*?)\}/);
+            if (keyValuePairs) {
+                const keyValuePairsString = keyValuePairs[1];
+                const keyValuePairsArray = keyValuePairsString.split(',');
+                const keyValuePairsObject = keyValuePairsArray.reduce((acc, pair) => {
+                    const [key, value] = pair.split('=');
+                    acc[key] = value;
+                    return acc;
+                }, {});
+
+
+                // add attributes to image
+                for (const [key, value] of Object.entries(keyValuePairsObject)) {
+                    image.setAttribute(key, value as any);
+                }
+
+                // remove key,value pair from text
+                parent.innerHTML = parent.innerHTML.replace(/\{(.*?)\}/, '');
+            }
+        }
+    }
+
+    // group headings
     for (const level of [4, 3, 2, 1]) {
         const children = [...body.children];
 
@@ -101,7 +139,7 @@ function groupHeadings(html: string): string {
 
             // add custom width
             if (level === 1) {
-                section.style.width = `${500 * (slice.length-1)}px`;
+                section.style.width = `${500 * Math.max(slice.length-1, 1)}px`;
             }
 
             section.append(...slice);
@@ -119,12 +157,12 @@ function groupHeadings(html: string): string {
     return body.innerHTML;
 }
 
-function mdToHTML(source: string) {
+function mdToHTML(filename: string, source: string) {
     const [md, mapping] = saveAndReplace(source);
     const html = he.decode(marked(md));
     const texifed = replaceMapping(html, mapping)
 
-    return groupHeadings(texifed);
+    return groupHeadings(filename, texifed);
 }
 
 async function mdFiles(args: string[]) {
@@ -165,7 +203,7 @@ async function main(args: string[]) {
 
     for (const file of files) {
         const content = (await fs.readFile(file)).toString();
-        const body = mdToHTML(content);
+        const body = mdToHTML(path.parse(file).name, content);
 
         // change endings to .html
         const newPath = changeExtension(file, ".html");
