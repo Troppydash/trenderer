@@ -91,3 +91,45 @@ spanning $[-N_u, Nu]$ and $[-Nv, Nv]$ is:
 \end{align*}
 
 \]
+
+
+## Economics
+
+### 17/12/2021 Writing Structure
+
+While the structure of DEEDS - Definition, Explanation, Example, Diagram, and Summary is easy to remember and applicable,
+and the considerations of CLASPP - Conclusion, Long short terms, Assumptions, Stakeholders, Pros and Cons, and Priorities
+are useful, a more detailed structure for Economic external questions can be applied to reduce thinking and planning time.
+
+#### Paper 1
+
+Part (a) 10 mark questions can be answered using this structure:
+
+Note: no need for diagrams unless indicated, no need for conclusions, no need to evaluate the consequences (weighing the impacts of each element)
+
+1. First Paragraph
+   - **Definitions**, define all elements of the question.
+   - **Answer** the question in a statement. Make sure to mention all the keywords.
+2. Further Paragraphs (for each item for compare, define, explain questions)
+   - **Definitions**, define the element
+   - **Details**, describe the element in more detail
+   - **Examples**, state a singular example of the element, can add one sentence as explanation
+   - **Consequences**, list 2-3 consequences of the element, can be single sentences. If asking to compare, only list differences
+
+Part (b) 15 mark questions can be answered using this structure:
+
+Note: no need for definition if defined in part (a), no introduction, at least 2 diagrams
+
+1. First Paragraph
+   - **Answer**, state two views of the topic, only brief reasoning are needed
+2. Further Paragraphs (can be "for, for, against, against" or "for, against, for" or "for, against")
+   - **Reason**, describe the reason why the topic supports the view
+   - **Consequences**, describe the consequences of the topic
+   - **Examples**, state one example that follows the view (Optional: follow with "Moreover" for style points)
+   - **Diagram**, use a diagram to mathematically show the change, state graphical changes. If no diagram, list more impacts
+3. Evaluation (if discuss question, only impacts of stakeholder on different scenarios)
+   - **Scenario**, state and expand on one view using a scenario, (even if not scenario met, view still stands)
+   - **Additions**, state any extra requirements and thoughts to improve the downsides
+   
+
+#### Paper 2
