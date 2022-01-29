@@ -1,8 +1,6 @@
-# Twenty Twenty-one
+# Mathematics
 
-## Mathematics
-
-### 16/12/2021 Image Compression (Fourier Transforms)
+## 16/12/2021 Image Compression (Fourier Transforms)
 
 #### Abstract
 The discrete fourier series can be used to achieve lossy image compression, albeit
@@ -92,10 +90,63 @@ spanning $[-N_u, Nu]$ and $[-Nv, Nv]$ is:
 
 \]
 
+## 29/01/2022 Lagrangian Mechanics
+The process of Lagrangian Mechanics provides an alternative pathway to finding the differential equations governing the motion of a rigid-body.
 
-## Economics
+For a system of $n$ degrees of freedom, each with a parameter of time $t$, represented by the set $S$:
+\[
+    S = \{ q_0, q_1, \ldots, q_{n-1} \},
+\]
+construct the multivariable function $K$ mapping from the set $S$ to the sum of the kinetic energies of each degree of freedom $q_i$, and construct the multivariable function $P$ similar to $K$ mapping from the set $S$ to the sum of the potential energies of each degree of freedom.
 
-### 17/12/2021 Writing Structure
+Then construct the lagrangian $L$ of the same domain and random as $K$ and $P$ such that:
+\[
+    L = K - P.
+\]
+
+For each degree of freedom $q_i$ of the function $L$, construct the Euler-Lagrange equation:
+\[
+    \frac{\partial L}{\partial q_i} - \frac{d}{dt} \frac{\partial L}{\partial \dot q_i} = 0.
+\]
+
+What is remained are $n$ systems of differential equations, which may be solved or left to simulation.
+
+#### Example
+Consider a pendulum of a steel ball of mass $m$ connected to a ceiling with an inflexible wire of length $\ell$, where the position of the ball is defined uniquely by the angle it makes with the normal resting position of the pendulum, represented by the function $\theta(t)$.
+
+This system consists of one degree of freedom, the function $\theta$. The kinetic energy $K$ of the pendulum is represented as (note that $s$ is the arc length from the normal and that $s=\theta \ell$):
+\[
+    K = \frac{1}{2} m v^2 = \frac{1}{2} m \dot s^2 = \frac{1}{2} m \ell^2 \dot\theta^2.
+\]
+
+Additionally, the potential energy $P$ of the pendulum is:
+\[
+    P = -mgy = -mgl \cos \theta.
+\]
+
+Therefore, the lagrangian $L$ can be defined as:
+\[
+    L = K - P = \frac{1}{2} m \ell^2 \dot\theta^2 - (-)mg \ell\cos \theta.
+\]
+
+For there is only one degree of freedom, the lagrangian can be put through the Euler-Lagrange equation:
+\[
+\begin{align*}
+    \frac{\partial L}{\partial \theta} &= \frac{d}{dt} \frac{\partial L}{\partial \dot \theta}\\
+    \frac{\partial L}{\partial \theta} &= -mg\ell \sin \theta\\
+    \frac{\partial L}{\partial \dot \theta} &= m\ell^2 \dot\theta\\
+    \frac{d}{dt} \frac{\partial L}{\partial \dot \theta} &= m \ell^2 \ddot\theta\\
+    \text{therefore:}\quad\quad&\\
+    -mg\ell \sin \theta &= m\ell^2 \ddot \theta\\
+    \ddot \theta &= -\frac{g}{\ell} \sin \theta.
+\end{align*}
+\]
+
+The equation of motion is then obtained in the last step.
+
+# Economics
+
+## 17/12/2021 Writing Structure
 
 While the structure of DEEDS - Definition, Explanation, Example, Diagram, and Summary is easy to remember and applicable,
 and the considerations of CLASPP - Conclusion, Long short terms, Assumptions, Stakeholders, Pros and Cons, and Priorities

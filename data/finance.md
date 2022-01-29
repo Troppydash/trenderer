@@ -285,5 +285,48 @@ contract to pass. A closing date of the contract is also placed.
 The escrow agent is a third party that conduct the transaction. All parties
 will put their items into an escrow account, which will distribute its items
 on the closing date. Escrow agents are using in the case of a property 
-transaction with the property seller, and can also be used within a mortgage payments for 
+transaction with the property seller, and can also be used within a mortgage 
+payments for 
 insurances and property taxes with the lender.
+
+
+## Inflation
+
+### Nominal, Real returns
+The nominal return of an investment is the profit divided by the money today;
+the real return of an investment is the nominal return adjusted for inflation.
+The nominal interest rate is $i$, and the rate of inflation is $I$.
+
+To calculate the real return of an investment, it is:
+\[
+    1 + R = \frac{1 + i}{1+I}
+\]
+
+### Monetary theory
+Commonly, the capacity utilization is proportional to the inflation rate of 
+an economy. For firms will resort to increasing prices when the utilization 
+reacts full capacity for profit; and will resort to decreasing prices when 
+utilization is low to use the available capacity. Often, inflation highs will
+be behind utilization highs.
+
+Monetary theory describes currency as a tradeable item of itself, and the 
+control of the currency can be used to control the rate of economic activity. 
+The equation of exchange describes the relationship between the money supply 
+$M$, the velocity of currency exchange $V$, the quantity of goods and 
+services $Q$ and the values of the goods and services $P$:
+\[
+    MV = PQ
+\]
+
+Quantitative easing is a technique to increase the money supply by injecting 
+money into the banks in the forms of buying bonds and securities. For the 
+money supply increased, the cost of money - its interest rate, will decrease, 
+thus controlling level of consumption and investment and improve economic 
+growth. Quantitative tightening is the selling of purchased assets by the 
+central bank.
+
+The idea of printing money in modern monetary theory is based on the view of 
+inflation as too much money chasing too little goods. The government may view 
+the cost of financing an infrastructure project using debt the same as using 
+inflation. This will only work if the debt is in the national currency.
+
