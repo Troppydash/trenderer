@@ -144,6 +144,22 @@ For there is only one degree of freedom, the lagrangian can be put through the E
 
 The equation of motion is then obtained in the last step.
 
+
+## 30/01/2022 Basic Quantum Computing
+Classical computing bits and operations can be represented by vectors and matrices, the idea would then be elemental to extend to the quantum computing scenario.
+
+### Classical Computing
+Bits are represented by 2-vectors. The fundamental values are the 0s and 1s, denoted as:
+\[
+\begin{align*}
+    |0\rangle = \begin{pmatrix}
+                    0 \\ 
+                    1 
+                \end{pmatrix}
+\end{align*}
+\]
+
+
 # Economics
 
 ## 17/12/2021 Writing Structure

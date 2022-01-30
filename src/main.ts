@@ -8,6 +8,11 @@ import * as he from 'he';
 import * as chokdiar from 'chokidar';
 import * as readline from "readline";
 
+const SETTINGS = {
+    prerender: false
+}
+
+
 // https://stackoverflow.com/questions/5953239/how-do-i-change-file-extension-with-javascript/5953384
 function changeExtension(file, extension) {
     const basename = path.basename(file, path.extname(file))
@@ -29,6 +34,7 @@ function formatLatex(latex: string): string {
 function saveAndReplace(raw: string): [string, string[]] {
     const mapping = [];
     const replaced = raw.replace(/\\\[\s*((.|\n|\r)*?)\s*\\\]/g, (_, latex) => {
+
         mapping.push(katex.renderToString(formatLatex(latex), {
             displayMode: true,
             output: 'html',
@@ -291,3 +297,5 @@ main(process.argv)
         console.error(err);
         process.exit(1);
     });
+
+// TODO: make an option to avoid pre-rendering
