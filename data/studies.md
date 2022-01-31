@@ -149,16 +149,89 @@ The equation of motion is then obtained in the last step.
 Classical computing bits and operations can be represented by vectors and matrices, the idea would then be elemental to extend to the quantum computing scenario.
 
 ### Classical Computing
-Bits are represented by 2-vectors. The fundamental values are the 0s and 1s, denoted as:
+Bits are represented by 2-vectors. The fundamental values are the 0s and 1s, denoted by:
+\[
+    |0\rangle = \begin{pmatrix}
+                    1 \\ 
+                    0 
+                \end{pmatrix}, \qquad
+    |1\rangle = \begin{pmatrix} 
+                    0\\
+                    1
+                \end{pmatrix}.
+\]
+
+The four classical operation that are applicable on a classical bit are the identity, negation, always-zero, and always-one. They can be represented by their functional notation or as a matrix:
 \[
 \begin{align*}
-    |0\rangle = \begin{pmatrix}
-                    0 \\ 
-                    1 
-                \end{pmatrix}
+    f(x) = x \qquad &\begin{pmatrix} 1 & 0\\ 0 & 1 \end{pmatrix}\\
+    f(x) = \neg x \qquad &\begin{pmatrix} 0 & 1\\ 1 & 0 \end{pmatrix}\\
+    f(x) = 0 \qquad &\begin{pmatrix} 1 & 1\\ 0 & 0 \end{pmatrix}\\
+    f(x) = 1 \qquad &\begin{pmatrix} 0 & 0\\ 1 & 1 \end{pmatrix}.
 \end{align*}
 \]
 
+An operation applied on a bit or on a combination of bits are reversible if the input can be constructed by its output and the type of operation applied. For the operation represented as a matrix $A$, it is reversible if and only if its determinant is non-zero.
+
+Quantum computations only use reversible operations, and applying the same quantum operation twice will yield the identity operation: that is, all quantum operators are their own inverses.
+
+#### Further
+The tensor/outer product of two vectors $V$ and $W$ is defined as the matrix by the identity:
+\[
+    V \otimes W = VW^T.
+\]
+
+Note that:
+\[
+    (V \otimes W)_{ij} = V_i W_j.
+\]
+
+For the matrix is isomorphic to a vector of high dimensions, the tensor product of two vector spaces $\mathbb{R}^n$, $\mathbb{R}^m$ can be expressed as a higher dimensional vector space:
+\[
+    \mathbb{R}^n \otimes \mathbb{R}^m  \cong \mathbb{R}^{nm}.
+\]
+
+The tensor product of two bits represent the product state of the two bits:
+\[
+\begin{align*}
+    | 00 \rangle &= \begin{pmatrix} 1 \\ 0 \end{pmatrix} \otimes \begin{pmatrix} 1\\0\end{pmatrix} \\
+    | 01 \rangle &= \begin{pmatrix} 1 \\ 0 \end{pmatrix} \otimes \begin{pmatrix} 0 \\1 \end{pmatrix}.
+\end{align*}
+\]
+The product state can be factored back into the individual states, the size of the product state of $n$ bits is $2^n$.
+
+Operations on multiple bits operate on their product state, such as the reversible operation CNOT. The most significant bit is deems the control bit, and the other the target bit. If the control bit is 1, the operator flips the target bit; if the control bit is zero, the operator leaves the target bit. The matrix form of the CNOT operation is:
+\[
+    c = \begin{pmatrix}
+    1 & 0 & 0 & 0\\
+    0 & 1 & 0 & 0\\
+    0 & 0 & 0 & 1\\
+    0 & 0 & 1 & 0\\
+\end{pmatrix}
+\]
+
+### Qubits
+Qubits are also represented by a 2-vector but of complex numbers $\begin{pmatrix} a \\ b\end{pmatrix}$, where $\|a\|^2 + \|b\|^2=1$ such as:
+\[
+    \begin{pmatrix} -1 \\ 0 \end{pmatrix} \quad \begin{pmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{pmatrix}.
+\]
+
+Note that the qubits are always in the form of a superposition of 0 and 1, with the superposition collapsing when the state of the qubits are measured. The measured probability of a qubit being 0 is $\|a\|^2$ and being 1 is $\|b\|^2$.
+
+For example, the qubit $\begin{pmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{pmatrix}$ has a $\frac{1}{2}$ chance of collapsing to a 0 and 1. The classical zero and one bit have a 100\% chance of collapsing to their respectable classical values.
+
+The product state of qubits are the tensor products of each individual bit,
+
+Like their classical counterparts, quantum gates are also represented as matrices.
+
+#### Entanglement
+Quantum entanglement of multiple qubits occurs when the tensor product cannot be factored into the individual qubit vectors. The multiple qubits are said to be entangled. Although the collapse of a single qubit in an entangled system will collapse the wave-function of all entangled qubits instantaneously, no information can be communicated.  
+
+#### Quantum Teleportation
+The technique uses multiple quantum entanglement to cut & paste quantum states from one location to another, with the aid of transfers of classical bits for the speed limit of information must not be broken.
+
+#### Further, TODO!
+Quantum unit circle, quantum circuit diagrams, quantum logic gates, a lot of algorithms.
 
 # Economics
 

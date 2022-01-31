@@ -9,7 +9,8 @@ import * as chokdiar from 'chokidar';
 import * as readline from "readline";
 
 const SETTINGS = {
-    prerender: false
+    prerender: false,
+    imagePrefix: "",
 }
 
 
@@ -34,21 +35,31 @@ function formatLatex(latex: string): string {
 function saveAndReplace(raw: string): [string, string[]] {
     const mapping = [];
     const replaced = raw.replace(/\\\[\s*((.|\n|\r)*?)\s*\\\]/g, (_, latex) => {
+        if (SETTINGS.prerender) {
+            mapping.push(katex.renderToString(formatLatex(latex), {
+                displayMode: true,
+                output: 'html',
+                throwOnError: false
+            }));
+        } else {
+            mapping.push(`<span class="katex-code-disp">${formatLatex(latex)}</span>`);
+        }
 
-        mapping.push(katex.renderToString(formatLatex(latex), {
-            displayMode: true,
-            output: 'html',
-            throwOnError: false
-        }));
         return `<>${mapping.length - 1}<>`;
     }).replace(/\$\s*((.|\n|\r)*?)\s*\$/g, (_, latex) => {
-        mapping.push(katex.renderToString(formatLatex(latex), {
-            displayMode: false,
-            output: 'html',
-            throwOnError: false
-        }));
+        if (SETTINGS.prerender) {
+            mapping.push(katex.renderToString(formatLatex(latex), {
+                displayMode: false,
+                output: 'html',
+                throwOnError: false
+            }));
+        } else {
+            mapping.push(`<span class="katex-code-inline">${formatLatex(latex)}</span>`);
+        }
+
         return `<>${mapping.length - 1}<>`;
     });
+
     return [replaced, mapping];
 }
 
@@ -68,7 +79,7 @@ function groupHeadings(filename: string, html: string): string {
     for (const image of images) {
         // change path
         const src = image.getAttribute('src');
-        image.setAttribute('src', `${filename}/${src}`);
+        image.setAttribute('src', `${SETTINGS.imagePrefix}${filename}/${src}`);
 
         // default size
         image.setAttribute('width', '350px');
@@ -277,15 +288,26 @@ async function main(args: string[]) {
         watchers.push(watcher);
     }
 
-    try {
-        await prompt('ENTERING WATCH MODE, PRESS ENTER TO EXIT...\n');
-    } catch (e) {
-        note(`exiting`);
-    } finally {
+    // wait for ctrl+c
+    process.on('SIGINT', async () => {
         for (const watcher of watchers) {
             await watcher.close();
         }
-    }
+        process.exit(0);
+    });
+
+    // wait forever
+    await new Promise(() => {});
+
+    // try {
+    //     await prompt('ENTERING WATCH MODE, PRESS ENTER TO EXIT...\n');
+    // } catch (e) {
+    //     note(`exiting`);
+    // } finally {
+    //     for (const watcher of watchers) {
+    //         await watcher.close();
+    //     }
+    // }
 
     return 0;
 }
