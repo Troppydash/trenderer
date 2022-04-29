@@ -144,7 +144,6 @@ For there is only one degree of freedom, the lagrangian can be put through the E
 
 The equation of motion is then obtained in the last step.
 
-
 ## 30/01/2022 Basic Quantum Computing
 Classical computing bits and operations can be represented by vectors and matrices, the idea would then be elemental to extend to the quantum computing scenario.
 
@@ -233,6 +232,63 @@ The technique uses multiple quantum entanglement to cut & paste quantum states f
 #### Further, TODO!
 Quantum unit circle, quantum circuit diagrams, quantum logic gates, a lot of algorithms.
 
+## 18/04/2022 Taylor's Formula, Generalized
+The iconic Taylor Series expansion $f(x)$ of an infinitely differentiable function $f$ at point $x$ is:
+\[
+    f(x + \varepsilon) = \lim_{n \to \infty} f(x) + \frac{\varepsilon}{1!} f'(x) + \frac{\varepsilon^2}{2!} f''(x) + \ldots + \frac{\varepsilon^n}{n!}f^{n}(x).
+\]
+
+Or, if setting the variable $k = x + \varepsilon$ and change the parameters, perhaps a more familiar form appears:
+\[
+    f_x(k) = \lim_{n \to \infty} f(x) + \frac{k - x}{1!}f'(x) + \frac{(k - x)^2}{2!} + \ldots + \frac{(k-x)^n}{n!} f^{n}(x).
+\]
+
+There are better notations for describing Taylor's Formula. Notice the Taylor expansion of $e^x$ at $0$ is,
+\[
+    e^{x} = \lim_{n\to\infty} 1 + \frac{1}{1!}x + \frac{1}{2!}x^2 + \ldots + \frac{1}{n!}x^n.
+\]
+
+Therefore by substitution, the taylor series of a function $f$ at point $x$ is:
+\[
+    f(x + \varepsilon) = e^{\varepsilon \frac{d}{dx}} f(x),
+\]
+where we are treating the differential operator $\frac{d}{dx}$ as a fraction.
+
+The extension to multivariate functions is then elementary. The Taylor expansion of a multivariable function $f(X)$ at point $X$ is:
+\[
+    f(X + E) = e^{E \cdot \nabla} f(X),
+\]
+where $\nabla$ is a vector of derivatives:
+\[
+    \nabla = \begin{bmatrix} \frac{d}{dx^1} & \frac{d}{dx^2} & \ldots\end{bmatrix}
+\]
+
+## 22/04/2022 Einstein Notation
+In linear algebra, the Einstein notation can help simplify writing the coefficients and dimension basis vectors of variables.
+
+Simply, free variables such as $i$, $j$ denotes a summation operation - usually ranging from $1$ to $3$ for three dimensions. Superscripts denote basis vectors or column vector indices, subscripts denote coefficients or row vectors indices.
+
+#### Dimensions
+A three-dimensional vector $v$ can be written as:
+\[
+    v = v_{i} x^{i},
+\]
+which is equivalent to writing:
+\[
+    v = \sum_{i=1}^{3} v_{i}x^{i} = v_1i + v_2j + v_3k.
+\]
+
+#### Vectors and Matrices
+Superscripts indicate row indices, and subscripts denote column indices. 
+
+So for the general matrix $M$, $M^i_{\;j}$ indicates the element in the $i$th row and $j$th column. The notation $M^i$ indicates the $i$th row, $M_{\;j}$ means the $j$th column.
+
+Notice that when applied to vectors/covectors, the superscript is designated to covectors (row vectors), and subscript for vectors (column vectors). This is because in physics: vectors are contravariant and represent quantities proportional to length, so by scaling down the basis vectors they must scale up; while covectors are covariant and represent quantities inverse to length, so scaling down the basis vectors scale them up.
+
+## 30/04/2022 Geometric Algebra
+### TBC...
+
+
 # Economics
 
 ## 17/12/2021 Writing Structure
@@ -273,3 +329,5 @@ Note: no need for definition if defined in part (a), no introduction, at least 2
    
 
 #### Paper 2
+Blah
+
