@@ -17,6 +17,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
 
+    <!-- custom cdn & polyfill global-->
+    <script>window.global = window;</script>
+    <script src="https://cdn.jsdelivr.net/npm/tdsim@1.1.2/build/tdsim.js"></script>
+
     <!--custom styles-->
     <style>
 
@@ -172,6 +176,51 @@
             }
         }
     </style>
+    <style>
+        /* Dynamic Graphs */
+        .dynamic-graph {
+            font-family: Roboto, "sans-serif";
+        }
+
+        .dynamic-graph canvas {
+            border: 0.1rem solid black;
+        }
+
+        .dynamic-graph div.rangeContainer label {
+            display: inline-block;
+            margin-right: 1rem;
+        }
+
+        .dynamic-graph div.rangeContainer,
+        .dynamic-graph div.variablesContainer {
+            margin-top: 0.5rem;
+        }
+
+        .dynamic-graph div.variablesContainer > div {
+            margin: 1rem 0;
+        }
+
+        .dynamic-graph div.variablesContainer > div > div {
+            display: flex;
+            align-items: center;
+        }
+
+        .dynamic-graph div.variablesContainer label {
+            font-size: 1.25rem;
+            font-weight: bold;
+            min-width: 200px;
+            display: block;
+        }
+
+        .dynamic-graph div.variablesContainer label:before {
+            content: 'Variable: ';
+        }
+
+        .dynamic-graph div.variablesContainer span {
+            display: inline-block;
+            margin-left: 1rem;
+        }
+    </style>
 
 </head>
 <body>
@@ -198,6 +247,8 @@
         });
     }
 </script>
-
+<script>
+    {{scripts}}
+</script>
 </body>
 </html>

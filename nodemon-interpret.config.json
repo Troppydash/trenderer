@@ -2,7 +2,7 @@
     "verbose": true,
     "watch": [
         "data/",
-        "assets/base.html",
+        "assets/",
         "src/"
     ],
     "ext": "md,ts,js"
