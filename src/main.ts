@@ -8,11 +8,13 @@ import * as he from 'he';
 import * as chokdiar from 'chokidar';
 import * as readline from "readline";
 
-const SETTINGS = {
+let SETTINGS = {
     prerender: false,
     imagePrefix: "",
     graphs: true,
 }
+
+// TODO: lift katex code out of p tags
 
 
 // https://stackoverflow.com/questions/5953239/how-do-i-change-file-extension-with-javascript/5953384
@@ -158,7 +160,7 @@ function groupHeadings(filename: string, html: string): string {
 
             // add custom width
             if (level === 1) {
-                section.style.width = `${500 * Math.max(slice.length - 1, 1)}px`;
+                // section.style.width = `${500 * Math.max(slice.length - 1, 1)}px`;
             }
 
             section.append(...slice);
@@ -214,6 +216,7 @@ function replaceGraphs(html: string, mapping: { [key: number]: any }): string {
 function mdToHTML(filename: string, source: string) {
     // find \begin{graph}
     const [raw, map] = generateGraphs(source);
+    SETTINGS.graphs = Object.values(map).length !== 0;
 
     const [md, mapping] = saveAndReplace(raw);
     const html = he.decode(marked(md));
@@ -251,7 +254,7 @@ function note(...message: string[]) {
     console.log('(log)', ...message);
 }
 
-async function generateHTML(file: string, template: string, graph?: string): Promise<string> {
+async function generateHTML(file: string, template: string, graph: string, head: string): Promise<string> {
     const content = (await fs.readFile(file)).toString();
     const body = mdToHTML(path.parse(file).name, content);
 
@@ -261,7 +264,8 @@ async function generateHTML(file: string, template: string, graph?: string): Pro
     const html = templateMapping(template, {
         title: path.basename(newPath, path.extname(newPath)),
         body: body,
-        scripts: graph ? graph : ''
+        scripts: SETTINGS.graphs ? graph : '',
+        head: SETTINGS.graphs ? head : ''
     });
 
     const minied = await minify.minify(html, {
@@ -304,7 +308,7 @@ async function main(args: string[]) {
         rest.push('data')
     }
 
-    const files = (await mdFiles(rest)).filter(name => name.includes('circuit'));
+    const files = (await mdFiles(rest));
     if (files.length === 0) {
         note(`processing ${0} files, exiting`);
         return 0;
@@ -313,20 +317,18 @@ async function main(args: string[]) {
     note(`processing ${files.length} files`);
 
     const template = (await fs.readFile('assets/base.html')).toString();
-    let graph;
-    if (SETTINGS.graphs) {
-        graph = (await fs.readFile('assets/graph.js')).toString()
-    }
+    const graph = (await fs.readFile('assets/graph.js')).toString()
+    const head = (await fs.readFile('assets/head.html')).toString()
 
     const watchers = []
     for (const file of files) {
-        const newPath = await generateHTML(file, template, graph);
+        const newPath = await generateHTML(file, template, graph, head);
         note(`created "${newPath}"`);
 
         const watcher = chokdiar.watch(file);
         watcher.on('change', async () => {
             note(`regenerating ${file}`);
-            const newPath = await generateHTML(file, template);
+            const newPath = await generateHTML(file, template, graph, head);
             note(`created "${newPath}"`);
         });
         watchers.push(watcher);
