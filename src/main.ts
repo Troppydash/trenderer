@@ -160,7 +160,7 @@ function groupHeadings(filename: string, html: string): string {
 
             // add custom width
             if (level === 1) {
-                // section.style.width = `${500 * Math.max(slice.length - 1, 1)}px`;
+                section.style.width = `${500 * Math.max(slice.length - 1, 1)}px`;
             }
 
             section.append(...slice);
