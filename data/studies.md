@@ -288,6 +288,48 @@ Notice that when applied to vectors/covectors, the superscript is designated to 
 ## 30/04/2022 Geometric Algebra
 ### TBC...
 
+## 10/11/2022 Derivagrals
+A generalization of the basic calculus operators (derivatives, integrals) to their fractional counterparts, the "Derivagral" operator is non-local, smooth, and interesting. Here are its derivations and definitions.
+
+### Derivation
+"Cauchy's formula for repeated integrals" can be used to derive the fractional part of the derviagral operator.
+
+#### Cauchy's formula for repeated integrals
+For smooth function $f(x)$ with lower bound $x$, upper bound $a$, the nth integral is:
+\[
+\begin{align*}
+    f^{(-n)} (x) &= \int_a^x \int_a^{b_1} \cdots \int_a^{b_{n-1}} f(b_n) \,db_n \cdots db_1 \\
+    &= \frac{1}{(n-1)!} \int_a^x (x-t)^{n-1} f(t) \,dt
+\end{align*}
+\]
+
+#### Fractional Integrals
+Simply substitute $n \in \mathbb{Z}^+$ with $\alpha \in \mathbb{R}^+$, and replace the factorial function with
+the generalized gamma function, $\Gamma(\alpha) = (\alpha - 1)!$. The $\alpha$th integral is:
+\[
+\begin{align*}
+    f^{(-\alpha)} &= \frac{1}{\Gamma(\alpha)} \int_a^x (x-t)^{\alpha - 1} f(t) \, dt \\
+    \Gamma(\alpha) &= \int_0^\infty t^{\alpha-1} e^{-t} \, dt
+\end{align*}
+\]
+
+#### Fractional Derivatives
+As integrals and derivatives are opposite operations, to take the $\alpha$th derivative implies taking the $k$th derivative,
+$k \in \mathbb{Z}^+$ and $k \leq \alpha$, then take the $k-\alpha$th integral, of which it is fractional.
+\[
+    f^{(\alpha)} (x) = \frac{d^k}{dx^k} f^{(\alpha-k)} (x)
+\]
+
+### Definition
+The full derivagral operator is defined as so, where $a$ is the lower bound, $x$ the upper, $\alpha$ the order of
+derivative.
+\[
+    {}_{a}D_x^{\alpha} (f) = \begin{dcases}
+        \frac{d^k}{dx^k} \, {}_{a}D_x^{\alpha-k}(f) & \text{if} \,\, k=\lceil{\alpha}\rceil \geq \alpha > 0 \\\\
+        \frac{1}{\Gamma(-\alpha)} \int_a^x (x-t)^{(-\alpha)-1} f(t) \, dt & \text{if} \,\, \alpha \leq 0
+    \end{dcases}
+\]
+
 
 # Economics
 
