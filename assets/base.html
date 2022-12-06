@@ -58,7 +58,8 @@
 
         #root {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            flex-direction: column;
 
             max-width: 200%;
             width: max-content;
@@ -85,9 +86,19 @@
         }
 
         .H2-section {
-            width: 500px;
+            /*min-width: 500px;*/
             padding: 0 2rem 0 0;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+
+        .H2-section p,
+        .H2-section ol {
+            width: min-content;
+            min-width: 500px;
         }
 
         .H2 {
