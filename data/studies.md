@@ -285,9 +285,6 @@ So for the general matrix $M$, $M^i_{\;j}$ indicates the element in the $i$th ro
 
 Notice that when applied to vectors/covectors, the superscript is designated to covectors (row vectors), and subscript for vectors (column vectors). This is because in physics: vectors are contravariant and represent quantities proportional to length, so by scaling down the basis vectors they must scale up; while covectors are covariant and represent quantities inverse to length, so scaling down the basis vectors scale them up.
 
-## 30/04/2022 Geometric Algebra
-### TBC...
-
 ## 10/11/2022 Derivagrals
 A generalization of the basic calculus operators (derivatives, integrals) to their fractional counterparts, the "Derivagral" operator is non-local, smooth, and interesting. Here are its derivations and definitions.
 
@@ -330,6 +327,217 @@ derivative.
     \end{dcases}
 \]
 
+## 11/12/2022 Feedforward Neural Network
+This chapter contains a study that implements the basic feedforward neural network.
+
+A feedforward neural network is a categorization network. It emits a vector output for a given vector input based on layers of nodes with weights and bias; the weights and bias are first optimized through a training process with sample datasets.
+
+### Notations
+The layers consist of an input layer, several hidden layers, and an output layer.
+
+- The number $L$ is the $L$th layer starting and including the input layer, with has $L=0$. Notice that the input layer is only pseudo and do not have associated stimulus or weighting values.
+- The nodes in the network are indexed by their layer $L$ and their index within the layer $i$, represented by $X^L_i$ where $X$ is the associated symbol.
+- The node values have the symbol $N$.
+- The stimulus values have the symbol $Z$.
+- The bias values have the symbol $B$.
+- The matrix $W^L$ is a matrix of the weights from layer $(L-1)$ to $L$, where the value $W^L_{ij}$ is the weighting from the node value $N^{L-1}_j$ to the node value $N^L_i$.
+ 
+The dimensions of these vectors/matrices are:
+\[
+    \begin{align*}
+        \text{let} \quad \dim N^L &= L_L \\
+        \text{then} \quad \dim Z^L &= L_L \\
+        \dim B^L &= L_L \\
+        \dim W^L &= L_L \times (L_{L-1})\\
+    \end{align*}
+\]
+
+Each node has an activation function $A(x)$, for example the sigmoid function:
+\[
+    A(x) = \frac{1}{1+e^{-x}}
+\]
+This network assumes that the activation function is the same for all nodes.
+
+A neural network $NW$ is defined to be the tuple containing a list of weight matrices and a list of bias vectors:
+\[
+    NW = (W, B) = ([W^0, W^1, \dots, W^L], [B^0, B^1, \dots, B^L])
+\]
+
+### Evaluation
+The following algorithm computes the output $\hat{Y}$ for a given input $X$ for a neural network.
+
+First map the input vector $X$ to the layer $L=0$ of pseudo-values, where
+\[
+    X_i = N^0_i.
+\]
+
+Now inductively apply the following transformation process to compute the $N^L$ from $N^{L-1}$. In expanded form, this is
+\[
+    \begin{bmatrix}
+        W^L_{11} & W^L_{12} & \dots \\
+        W^L_{21} & \ddots   & \\
+        \vdots  & & 
+    \end{bmatrix}
+    \begin{bmatrix}
+        N^{L-1}_1 \\ N^{L-1}_2 \\ \vdots
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+        B^L_1 \\ B^L_2 \\ \vdots
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        Z^L_1 \\ Z^L_2 \\ \vdots
+    \end{bmatrix}
+\]
+then
+\[
+    \begin{bmatrix}
+        N^{L}_1 \\ N^{L}_2 \\ \vdots
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        A(Z^L_1) \\ A(Z^L_2) \\ \vdots
+    \end{bmatrix}
+\]
+
+Written in matrix form, with a vectorized activation function $A$, this is:
+\[
+    N^L = A(W^L N^{L-1} + B^L).
+\]
+
+The output values $\hat{Y}$ is mapped from the last node value layer, where
+\[
+    \hat{Y}_i = N^L_i
+\]
+
+### Training
+The training algorithm uses backpropagation (gradient descent) to compute the network weights and biases given a sample dataset. For the results to be accurate, the initial biases and weights of the neural network must be randomized.
+
+The parameters are labeled to be:
+- The number $\mu$ as the learning rate of the gradient descent
+- The dataset as a tuple of inputs and outputs $D = (X, Y)$, where
+\[
+  X = [X^0, X^1, \dots], \; Y = [Y^0, Y^1, \dots]
+\]
+and $X^i$ is a vector input that
+should output the vector $Y^i$ (the actual outputs of the network given the input vector is $\hat{Y}^i$) . Also let the dimensions of the dataset $D$ to be the length of its vectors $X$ and $Y$. 
+- The cost function $C(\hat{y}, y)$, for example the mean squared error:
+  \[
+  C(\hat{y}, y) = (\hat{y} - y)^2
+  \]
+
+Given the above parameters and a network $NW$, define the mean cost $C$ of the network's evaluation on the entire sample dataset $D$ to be:
+\[
+\begin{align*}
+    C &= \frac{1}{\dim D} \sum_i^{\dim D} C_i \\
+    C_i &= C(\hat{Y}^i, Y^i)
+\end{align*}
+\]
+where $C(\hat{Y}, Y)$ is the vectorized cost function, and the vector $\hat{Y}^i$ is the network evaluated output given the input $X^i$.
+
+Broadly speaking, the updating process for the network $NW$ is a gradient descent on its biases $B$ and weights $W$ that minimizes the mean cost $C$ on the sample dataset. Symbolically, the simple gradient descent algorithm is:
+\[
+\begin{align*}
+    B' &= B - \mu \frac{\partial C}{\partial B}\\
+    W' &= W - \mu \frac{\partial C}{\partial W}\\
+\end{align*}
+\]
+where the full partial cost derivatives against the biases and weights are the mean of the individual partial derivatives:
+\[
+\begin{align*}
+    \frac{\partial C}{\partial B} &= \frac{1}{\dim D} \sum_i^{\dim D} \frac{\partial C_i}{\partial B}\\
+    \frac{\partial C}{\partial W} &= \frac{1}{\dim D} \sum_i^{\dim D} \frac{\partial C_i}{\partial W}\\
+\end{align*}
+\]
+
+The use of backpropagation calculates these individual partial derivatives of biases and weights that leads to computation of the total partial derivatives.
+
+## 11/12/2022 FF Neural Network, Continued
+
+### Training, Backpropagation
+This algorithm calculates the partial derivatives $\frac{\partial C_i}{\partial B}$ and $\frac{\partial C_i}{\partial B}$ for the input output pair $(X^i, Y^i)$ given the neural network $NW = (B, W)$.
+
+The following setup requires evaluating the network with the inputs $X^i$, filling the node values $N^L_i$ and stimulus values $Z^L_i$ and computing the cost $C_i$ through the cost function.
+
+#### Node Derivatives
+Firstly the node derivatives $\partial N$ are found, symbolically they are defined to be
+\[
+{\partial N}^L_i = \frac{\partial C_i}{\partial Z^L_i}
+\]
+
+Through the chain rule, the node derivatives are inductively computed starting from the last layer $L$
+\[
+\begin{align*}
+    {\partial N}^L_i &= \frac{\partial C_i}{\partial N^L_i } \frac{\partial N^L_i}{\partial Z^L_i} \\
+                     &= C'(N^L_i, Y^i) A'(Z^L_i)
+\end{align*}
+\]
+where the functions $C'$ and $A'$ are the vectorized derivatives of the cost function and activation function.
+
+The node derivatives of layers $(L-1)$ before the last layer are computed with the node derivatives of layer $L$.
+\[
+\begin{align*}
+    {\partial N}^{L-1}_j &= \sum_i^{L_L} {\partial N}^L_i \frac{\partial Z^L_i}{\partial N^{L-1}_j} \frac{\partial N^{L-1}_j}{\partial Z^{L-1}_j} \\
+    &= \sum_i^{L_L} {\partial N}^L_i W_{ij} A'(Z^{L-1}_j)
+\end{align*}
+\]
+
+Vectorized, this is
+\[
+    \begin{align*}
+{\partial N}^L &= C'(N^L, Y) \circ A'(Z^L) \\
+{\partial N}^{L-1} &= \left( (W^L)^T {\partial N}^L \right) \circ A'(Z^L)
+    \end{align*}
+\]
+
+where the operation $\circ$ denotes vector element-wise multiplication.
+
+#### Bias/Weights partial derivatives
+One can compute the partial derivatives of the cost function from the node derivatives.
+
+The partial derivative with regard to each bias is
+\[
+\begin{align*}
+    \frac{\partial C_i}{\partial B^L_i} &= \frac{\partial C_i}{\partial Z^L_i} \frac{\partial Z^L_i}{\partial B^L_i}\\
+    &= {\partial N}^L_i
+\end{align*}
+\]
+
+and the partial derivative for each weight value is
+\[
+\begin{align*}
+    \frac{\partial C_i}{\partial W^L_{ij}} &= \frac{\partial C_i}{\partial Z^L_i} \frac{\partial Z^L_i}{\partial W^L_{ij}}\\
+    &= {\partial N}^L_i N^{L-1}_j
+\end{align*} 
+\]
+
+Vectorized, this is
+\[
+\begin{align*}
+    \frac{\partial C_i}{\partial B^L} &= {\partial N}^L \\
+    \frac{\partial C_i}{\partial W^L} &= {\partial N}^L \left( N^{L-1} \right)^T
+\end{align*}
+\]
+
+The partial derivatives of the entire neural network biases and weights are therefore
+\[
+\begin{align*}
+    \frac{\partial C_i}{\partial B} &= \left[ \frac{\partial C_i}{\partial B^1}, \frac{\partial C_i}{\partial B^2}, \dots  \right] \\
+    \frac{\partial C_i}{\partial W} &= \left[ \frac{\partial C_i}{\partial W^1}, \frac{\partial C_i}{\partial W^2}, \dots  \right] \\
+\end{align*}
+\]
+
+## 12/12 p-adic numbers
+Introduction...
+
+### Distance and Magnitude
+
+### Representation
+
+### Operations
+
+### Applications
 
 # Economics
 
