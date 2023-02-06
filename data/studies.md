@@ -539,6 +539,123 @@ Introduction...
 
 ### Applications
 
+## 03/01/2023 Borwein Integrals
+The chapter concerns the integral
+\[
+\newcommand{\sinc}[1]{\frac{\sin #1}{#1}}
+    \int_{-\infty}^{\infty} \sinc{x} \times \sinc{x/3} \times \sinc{x/5} \times \dots \, dx = \pi  
+\]
+where
+\[
+\newcommand{\sinc}[1]{\frac{\sin #1}{#1}}
+    \int_{-\infty}^{\infty} \sinc{x} \times \dots \times \sinc{x/15} \times \dots \, dx < \pi
+\]
+
+More generally
+\[
+    I(2n+1) = \int_{-\infty}^{\infty} \prod_{k=0}^{n} \frac{\sin(x/(2k+1))}{2k+1} \, dx = \begin{cases}
+        \pi & \text{if } 2n+1 < 15 \\
+        < \pi & \text{if } 2n+1 \geq 15
+    \end{cases}
+\]
+
+### Identities
+To approach the proof of such integral behaviors, we require some functional identities:
+
+\[
+\newcommand{\F}[0]{\mathcal{F}}
+
+\begin{align}
+
+\F f& = \hat f(v) = \int_{-\infty}^{\infty} f(t) e^{-2\pi ivt} \, dt \\
+
+\F cf &= c \mathcal{F} f = c \hat f(v) \\
+
+\F \,\text{rect}(\alpha t) &= \frac{1}{\alpha} \frac{\sin \pi v / \alpha}{\pi v / \alpha} \\
+
+\F c &= c \delta(v) \\
+
+\int_{-\infty}^{\infty} f(x) \delta(x-\alpha) \, dx &= f(\alpha) \\
+
+\F \{f * g\} &= \F f \times \F g \\
+
+f * g &= \int_{-\infty}^{\infty} f(t-\tau) g(\tau) \, d\tau
+
+\end{align}
+\]
+
+### Proof
+Consider the integral
+\[
+    I(2n + 1) = \int_{\mathbb{R}} \frac{\sin x}{x} \times \frac{\sin x/3}{x/3} \times \dots \times \frac{\sin x/(2n+1)}{2n+1} \, dx
+\]
+and denote the integrand to be the function $f_{2n+1}(x)$.
+
+With the substitution of $d = 2n+1$, notice that
+\[
+\newcommand{\rect}[0]{\text{ rect }}
+\newcommand{\F}[0]{\mathcal{F}}
+
+\begin{align*}
+    f_{d}(x) &= \frac{\sin x}{x} \times \frac{\sin x/3}{x/3} \times \dots \times \frac{\sin x/(d)}{d} \\
+    &= \F \{ \pi \rect \pi x \} \times \F \{ 3\pi \rect 3\pi x \} \times \dots \times \F \{ d\pi \rect d\pi x \} \\
+    &= \F \{(\pi \rect x) * (3\pi \rect 3x) * \dots * (d\pi \rect dx ) \} \\
+    &= \F g_{d}(x)
+\end{align*}
+\]
+
+Consider $g_{d}(x)$. Notice that it is composed of successive convolutions of the rectangular function.
+
+First consider the width of the 'peak' of the function $g_{d}(x)$ denoted by $w(d)$. Initially $w(1)=1/\pi$ for that is the width of the first rectangular function, and because convolutions are similar to a moving average, the value $w(3)$ is equal to the first width subtracting the width of the second rectangular function $w(3) = 1/\pi - 1/3\pi$. Continuing, it is the value of $d=15$ where $w(15) < 0$ for
+\[
+    w(15) = \frac{1}{\pi} (1 - 1/3 - 1/5 - 1/7 - \dots - 1/15) < 0
+\]
+
+Now consider the value $g_{d}(0)$. Initially $g_1(0) = \pi$, and as convolutions are linear, the next case is
+\[
+\newcommand{\rect}[0]{\text{ rect }}
+
+\begin{align*}
+    g_3(0) &= \int_{\mathbb{R}} (\pi \rect \pi (0-\tau)) \times (3\pi \rect 3\pi \tau) \, d\tau \\
+    &= 3\pi^2 \int_{\mathbb{R}} \rect \pi \tau \times \rect 3\pi\tau \, d\tau \\
+    &= 3\pi^2 (\text{width} \times \text{height}) \\
+    &= 3\pi^2 (1/3\pi \times 1) \\
+    &= \pi
+\end{align*}
+\]
+
+This trend continues for all $d < 15$ as the width is always positive (and thus the rectangle area approximation is exact). Use the case $d=5$,
+\[
+\newcommand{\rect}[0]{\text{ rect }}
+
+\begin{align*}
+    g_3(t) &= \pi \\
+    g_5(0) &= \int_{\mathbb{R}} g_3(-\tau) \times (5\pi \rect 5\pi\tau) \, d\tau \\
+    &= \int_{\mathbb{R}} \pi \times 5\pi \rect 5\pi\tau \, d\tau \\
+    &= 5\pi^2 (1/5\pi \times 1) \\
+    &= \pi
+\end{align*}
+\]
+
+Therefore for $d < 15$, we can simplify the original integral
+\[
+\begin{align*}
+    I(2n+1) &= I(d) \\
+    &= \int_{\mathbb{R}} f_d(x) \, dx \\
+    &= \int_{\mathbb{R}} \mathcal{F} g_d(t) \, dx \\
+    &= \int_{\mathbb{R}} \int_{\mathbb{R}} g_d(t) e^{-2\pi ixt} \, dt \, dx\\
+    &= \int_{\mathbb{R}} \int_{\mathbb{R}} g_d(t) e^{-2\pi ixt} \, dx \, dt\\
+    &= \int_{\mathbb{R}} g_d(t) \int_{\mathbb{R}} e^{-2\pi ixt} \, dx \, dt\\
+    &= \int_{\mathbb{R}} g_d(t) \mathcal{F} \{ 1 \} \, dt\\
+    &= \int_{\mathbb{R}} g_d(t) \delta(t) \, dt\\
+    &=  g_d(0) \\
+    &= \pi
+\end{align*}
+\]
+
+For larger $d$, $g_d(0)$ becomes smaller due to the convolution of functions with no peak levels. Thus concludes the proof of the Borwein Integrals.
+
+
 # Economics
 
 ## 17/12/2021 Writing Structure
